@@ -1,0 +1,47 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             program, CODE, READONLY
+    2 00000000                 EXPORT           main
+    3 00000000                 ENTRY
+    4 00000000         main
+    5 00000000 F04F 0000       MOV              r0, #0
+    6 00000004 F04F 0101       MOV              r1, #1
+    7 00000008 F04F 0202       MOV              r2, #2
+    8 0000000C F04F 0303       MOV              r3, #3
+    9 00000010 E7FE            B                main
+   10 00000012                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=.\objects\inain.d -o.\objects\inain.o -I.\RTE\_Target_1 -IC:\Users
+\TimRo\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Users\Ti
+mRo\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\Device\ARM\ARMCM3\Include --predefi
+ne="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 528" --predefine="_RTE_ 
+SETA 1" --predefine="ARMCM3 SETA 1" --list=.\listings\inain.lst inain.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+main 00000000
+
+Symbol: main
+   Definitions
+      At line 4 in file inain.s
+   Uses
+      At line 2 in file inain.s
+      At line 9 in file inain.s
+
+program 00000000
+
+Symbol: program
+   Definitions
+      At line 1 in file inain.s
+   Uses
+      None
+Comment: program unused
+2 symbols
+336 symbols in table
