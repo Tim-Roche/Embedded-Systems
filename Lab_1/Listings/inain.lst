@@ -8,12 +8,33 @@ ARM Macro Assembler    Page 1
     2 00000000                 EXPORT           main
     3 00000000                 ENTRY
     4 00000000         main
-    5 00000000 F04F 0000       MOV              r0, #0
-    6 00000004 F04F 0101       MOV              r1, #1
-    7 00000008 F04F 0202       MOV              r2, #2
-    8 0000000C F04F 0303       MOV              r3, #3
-    9 00000010 E7FE            B                main
-   10 00000012                 END
+    5 00000000 F04F 0000       LDR              r0,=0       ;index
+    6 00000004 4B03            LDR              r3,=label1
+    7 00000006 F833 1020 
+                       top     LDRH             r1,[r3, r0, LSL #2]
+    8 0000000A F100 0001       ADD              r0, r0, #1  ; index the index
+    9 0000000E 2817            CMP              r0, #23
+   10 00000010 E7FE            B                main
+   11 00000012 00 00 00000000  AREA             mydata, DATA, READWRITE
+   12 00000000 BB AA BB 
+              AA BB AA 
+              BB AA BB 
+              AA BB AA 
+              BB AA BB 
+              AA BB AA 
+              BB AA BB 
+              AA BB AA 
+              BB AA BB 
+              AA BB AA 
+              BB AA BB 
+              AA BB AA 
+              BB AA BB 
+              AA BB AA 
+              BB AA BB 
+              AA       label1  DCW              0xAABB, 0xAABB, 0xAABB, 0xAABB,
+ 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB
+, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB
+   13 0000002E                 END
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\objects\inain.d -o.\objects\inain.o -I.\RTE\_Target_1 -IC:\Users
 \TimRo\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Users\Ti
@@ -33,7 +54,7 @@ Symbol: main
       At line 4 in file inain.s
    Uses
       At line 2 in file inain.s
-      At line 9 in file inain.s
+      At line 10 in file inain.s
 
 program 00000000
 
@@ -43,5 +64,36 @@ Symbol: program
    Uses
       None
 Comment: program unused
+top 00000006
+
+Symbol: top
+   Definitions
+      At line 7 in file inain.s
+   Uses
+      None
+Comment: top unused
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+label1 00000000
+
+Symbol: label1
+   Definitions
+      At line 12 in file inain.s
+   Uses
+      At line 6 in file inain.s
+Comment: label1 used once
+mydata 00000000
+
+Symbol: mydata
+   Definitions
+      At line 11 in file inain.s
+   Uses
+      None
+Comment: mydata unused
 2 symbols
-336 symbols in table
+341 symbols in table

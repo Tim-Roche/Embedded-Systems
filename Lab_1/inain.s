@@ -1,10 +1,13 @@
 	AREA program, CODE, READONLY
 	EXPORT main
-	ENTRY 
+	ENTRY
 main
-	MOV r0, #0
-	MOV r1, #1
-	MOV r2, #2
-	MOV r3, #3
+	LDR r0,=0 ;index
+	LDR r3,=label1
+top LDRH r1,[r3, r0, LSL #2]
+	ADD r0, r0, #1 ; index the index
+	CMP r0, #23
 	B main
+	AREA mydata, DATA, READWRITE
+label1 DCW 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB, 0xAABB 
 	END
