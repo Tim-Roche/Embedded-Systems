@@ -7,7 +7,7 @@ P2OUT EQU 0x40004C03
 P1REN EQU 0x40004C06
 P2REN EQU 0x40004C07
 	
-P1IN EQU 0x40004C02
+P1IN EQU 0x40004C00
 P2IN EQU 0x40004C01
 	
 redMASK EQU 0x1
@@ -17,7 +17,7 @@ blueMASK EQU 0x4
 tstMASK EQU 0x2
 ackMASK EQU 0x8
 flaMASK EQU 0x40
-olaMASK EQU 0x80
+olaMASK EQU 0x8
 
         THUMB
         AREA    |.text|, CODE, READONLY, ALIGN=2
@@ -111,30 +111,114 @@ asm_main
         LDRB    R1, [R0]		; 
         ORR     R1, olaMASK     ; set bit 0
         STRB    R1, [R0]        ; store back to Dir Reg	
-
+loop
+	BL  onRed
+	BL  offBlue
+	BL checkTST ; Returns TST in R0
+	CMP R0, #1
+	BNE noEqual
+	BL  onGreen
+	B loop
+noEqual
+	BL offGreen
+	B loop
+	
 checkTST
 		;INPUTS:  P1.1 (TST) 
 		;         P1.4 (ACK) 
 		;         P2.6 (FLA) 
 		;         P2.7 (OLA)
         LDR     R0,=P1IN      ; load Dir Reg in R1
+        LDRB    R1, [R0]	  ; 
+		TST     R1, #tstMASK
+		MOVEQ	R0, 1 	
+		MOVNE   R0, 0
+		BX LR
+		
+checkFLA
+		;INPUTS:  P1.1 (TST) 
+		;         P1.4 (ACK) 
+		;         P2.6 (FLA) 
+		;         P2.7 (OLA)
+        LDR     R0,=P2IN      ; load Dir Reg in R1
         LDRB    R1, [R0]		; 
-		TST     R1, tstMASK
-		MOVNE	R0, 1 		
+		TST     R1, #olaMASK
+		MOVEQ	R0, 1 	
+		MOVNE   R0, 0	
+		BX LR
+
+checkACK
+		;INPUTS:  P1.1 (TST) 
+		;         P1.4 (ACK) 
+		;         P2.6 (FLA) 
+		;         P2.7 (OLA)
+        LDR     R0,=P2IN      ; load Dir Reg in R1
+        LDRB    R1, [R0]		; 
+		TST     R1, #ackMASK
+		MOVEQ	R0, 1 	
+		MOVNE   R0, 0
+		BX LR
 		
-		
-		
+	
 functionB
 		BL  offRed
-		Bl  offBlue
+		BL  offBlue
 		BL  onGreen
+		BX LR
 		
-		
-		
-		
+offBlue
+        ; turn off blue LED
+        LDR     R0, =P2OUT      ; load Output Data Reg in R1
+        LDRB    R1, [R0]
+        MVN     R2, blueMASK    ; load complement of bit 0 mask
+        AND     R1, R2          ; clear bit 0
+        STRB    R1, [R0]        ; store back to Output Data Reg
+        BX      LR
+offRed
+         ; turn off red LED
+        LDR     R0, =P1OUT      ; load Output Data Reg in R1
+        LDRB    R1, [R0]
+        MVN     R2, #redMASK    ; load complement of bit 0 mask
+        AND     R1, R2          ; clear bit 0
+        STRB    R1, [R0]        ; store back to Output Data Reg
+        BX      LR
+offGreen
+         ; turn off green LED
+        LDR     R0, =P2OUT      ; load Output Data Reg in R1
+        LDRB    R1, [R0]
+        MVN     R2, #greenMASK    ; load complement of bit 0 mask
+        AND     R1, R2          ; clear bit 0
+        STRB    R1, [R0]        ; store back to Output Data Reg
+        BX      LR
+onBlue
+        ; turn on blue LED
+        LDR     R0, =P2OUT      ; load Output Data Reg in R1
+        LDRB    R1, [R0]
+        ORR     R1, #blueMASK         ; set bit 0
+        STRB    R1, [R0]        ; store back to Output Data Reg
+        BX      LR
+onRed 
+        ; turn on Red LED
+        LDR     R0, =P1OUT      ; load Output Data Reg in R1
+        LDRB    R1, [R0]
+        ORR     R1, #redMASK         ; set bit 0
+        STRB    R1, [R0]        ; store back to Output Data Reg
+        BX      LR
+onGreen
+        ; turn on blue LED
+        LDR     R0, =P2OUT      ; load Output Data Reg in R1
+        LDRB    R1, [R0]
+        ORR     R1, greenMASK         ; set bit 0
+        STRB    R1, [R0]        ; store back to Output Data Reg
+        BX      LR
 		
 
-green
+	
+		
+		
+		
+		
+		
 
 
 ; This subroutine performs a delay of n ms (for 3 MHz CPU clock). 
