@@ -45,7 +45,7 @@ int main(void)
 }
 */
 
-#include <msp430.h>
+//#include <msp430.h>
 
 
 /**
@@ -110,17 +110,18 @@ int main(void)
     P1OUT &= ~BIT4;
     P1OUT &= ~BIT5;
     volatile unsigned int i = 0;
+    int count = 0;
     while(1)
     {
-
-        j = P2IN&BIT1;
-        while(j == 0)
-        {
-            if((i % 1000) == 0)
+            j = P2IN&BIT1;
+            while(j == 0)
+            {
+                if(((i % 1000) == 0) && (count < 4))
             {
                 P1OUT ^= BIT4;      // Toggle P1.0 using exclusive-OR
                 P1OUT ^= BIT5;
                 i=0;
+                count++;
             }
             j = P2IN&BIT1;
             i++;
