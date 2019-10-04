@@ -111,22 +111,23 @@ int main(void)
     P1OUT &= ~BIT5;
     volatile unsigned int i = 0;
     int count = 0;
+
     while(1)
     {
             j = P2IN&BIT1;
-            while(j == 0)
+            while((j == 0) && (count < 4))
             {
-                if(((i % 1000) == 0) && (count < 4))
-            {
-                P1OUT ^= BIT4;      // Toggle P1.0 using exclusive-OR
-                P1OUT ^= BIT5;
-                i=0;
-                count++;
+                if((i % 1000) == 0)
+                {
+                    P1OUT ^= BIT4;      // Toggle P1.0 using exclusive-OR
+                    P1OUT ^= BIT5;
+                    i=0;
+                    count++;
+                }
+                i++;
             }
-            j = P2IN&BIT1;
-            i++;
-        }
         P1OUT &= ~BIT4;
         P1OUT &= ~BIT5;
+        count = 0;
     }
 }
