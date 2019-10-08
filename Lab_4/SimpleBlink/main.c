@@ -19,6 +19,7 @@
 }*/
 
 /*
+//Multiple Blink
 #include <msp430.h>
 int main(void)
 {
@@ -45,19 +46,8 @@ int main(void)
 }
 */
 
-//#include <msp430.h>
-
-
-/**
- * File: main.c
- * Author: Will Cronin
- * Date Created: September 12th 2018
- * Date of Last Revision: September 19th 2018
- * Board Used: MSP430G2553
- */
-//#include <msp430.h>
-
 //Button Blink
+//#include <msp430.h>
 /**
  * main.c
  * MSP430f5529
@@ -92,6 +82,7 @@ int main(void)
 }
 */
 
+//Offboard blink
 #include <msp430.h>
 int main(void)
 {
