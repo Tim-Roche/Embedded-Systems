@@ -1,6 +1,6 @@
 #include <msp430.h>
 //HARDWARE
-/*
+
 int main(void){
     WDTCTL = WDTPW + WDTHOLD;           // Stop WDT
 
@@ -34,9 +34,9 @@ __interrupt void button_interrupt(void){
    }
    P1IFG &= ~BIT1;             // P1.3 interrupt flag is cleared
 }
-*/
 
 //SOFTWARE
+/*
 int main(void) {
     WDTCTL = WDTPW | WDTHOLD;   // stop watchdog timer
 
@@ -108,4 +108,4 @@ __interrupt void Timer0A0 (void){
         break;
     }
 }
-
+*/

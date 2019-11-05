@@ -16,7 +16,7 @@ int main(void)
     //P1IFG &= ~BIT1;             // Clears the interrupt for P1.1
 
 
-    TA0CTL = TASSEL_1 + ID_2 + MC_2 + TACLR + TAIE;
+    TA0CTL = TASSEL_1 + ID_3 + MC_2 + TACLR + TAIE;
     TA0CCTL0 = CM_3 + CCIS_0 + SCS + CAP + CCIE;
     TA0CCTL2 |= CCIE;
     TA0CCR2 = 4000;             // Sets CCR0 register to value 0x19A
@@ -46,12 +46,12 @@ __interrupt void TIMER_A0(void)
     if(P1IES & BIT1)
     {
         P1IES &= ~BIT1;
-        TA0CTL = TASSEL_1 + ID_2 + MC_2 + TACLR + TAIE; //Reset Timer A
+        TA0CTL = TASSEL_1 + ID_3 + MC_2 + TACLR + TAIE; //Reset Timer A
     }
     else
     {
         P1IES |= BIT1;
-        TA0CTL = TASSEL_1 + ID_2 + MC_2 + TACLR + TAIE; //Reset Timer A
+        TA0CTL = TASSEL_1 + ID_3 + MC_2 + TACLR + TAIE; //Reset Timer A
         TA0CCR2 = TA0CCR0;
         P1OUT &= ~BIT0;
     }
