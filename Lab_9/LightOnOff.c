@@ -1,19 +1,12 @@
-//PWM
 #include <msp430.h>
-
+// Current sensor conversion example
+// Input voltage has range 0-2.5V, which corresponds to 0 to 1A.
 unsigned int in_value;
 
 int main(void)
 {
-    P1SEL |= BIT0;
+    P1SEL &= ~BIT0;
     P1DIR |= BIT0;
-
-    P1SEL |= BIT2;
-    P1DIR |= BIT2;
-    TA0CTL = TASSEL_2 + MC_1 + TACLR;   // SMCLK, up mode
-    TA0CCR0 = 4096;                    // Sets the PWM Period
-    TA0CCTL1 = OUTMOD_7;                // CCR1 reset/set
-    TA0CCR1 = 0;                      // CCR1 PWM duty cycle
 
     P1OUT &= ~BIT0;
     /* ***** Core configuration ***** */
@@ -71,6 +64,12 @@ int main(void)
 __interrupt void ADC12_ISR(void)
 {
     in_value = ADC12MEM0 & 0x0FFF;
-    TA0CCR1 = 4096 - in_value;
+    if(in_value > 3700)
+    {
+        P1OUT |= BIT0;
+    }
+    else
+    {
+        P1OUT &= ~BIT0;
+    }
 }
-
