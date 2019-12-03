@@ -1,0 +1,32 @@
+#include <msp430.h>
+
+int main(void)
+{
+    WDTCTL = WDTPW | WDTHOLD;
+    P4SEL |= BIT4 + BIT5;
+
+    UCA1CTL1 |= UCSWRST;
+    UCA1BR0 = 8;
+    UCA1BR1 = 0;
+    UCA1CTL1 |= UCSSEL_2;
+    UCA1MCTL |= UCBRS_6;
+    UCA1CTL1 &= ~UCSWRST;
+    UCA1IE   |= UCRXIE;
+    __bis_SR_register(LPM0_bits + GIE);
+}
+
+#pragma vector = USCI_A1_VECTOR
+__interrupt void USCI_ISR(void)
+{
+    switch(_even_in_range(UCA1IV,4))
+    {
+        case 0: break;
+        case 2:
+            while(!(UCA1IFG & UCTXIFG));
+            UCA1TXBUF = UCA1RXBUF;
+            break;
+        case 4: break;
+        default: break;
+    }
+}
+

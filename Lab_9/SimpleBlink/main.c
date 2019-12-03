@@ -71,6 +71,6 @@ int main(void)
 __interrupt void ADC12_ISR(void)
 {
     in_value = ADC12MEM0 & 0x0FFF;
-    TA0CCR1 = 4096 - in_value;
+    TA0CCR1 = in_value;
 }
 
